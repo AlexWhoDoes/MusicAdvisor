@@ -46,7 +46,7 @@ public class Authorization {
                         String query = exchange.getRequestURI().getQuery();
                         String request;
                         if (query != null && query.contains("code")) {
-                            authorizationCode = query.substring(5); // i did not extract a code itself
+                            authorizationCode = query.substring(5); 
                             System.out.println("code received");
                             request = "Got the code. Return back to your program.";
                         } else {
@@ -59,7 +59,7 @@ public class Authorization {
 
             System.out.println("waiting for code...");
 
-            while (authorizationCode == null) { //That block of code is important PAY ATTENTION (i did not even think of it)
+            while (authorizationCode == null) {  //not a best solution but i could not find better one at that moment
                 Thread.sleep(100);
             }
             server.stop(5);
@@ -73,19 +73,19 @@ public class Authorization {
     void getAccessToken() {
         System.out.println("making http request for access_token...");
         HttpRequest request = HttpRequest.newBuilder()
-                .header("Content-Type", "application/x-www-form-urlencoded") //somehow it has not been changed (taken like in example from Jetbreans)
+                .header("Content-Type", "application/x-www-form-urlencoded") 
                 .uri(URI.create(serverPath + "/api/token"))
                 .POST(HttpRequest.BodyPublishers.ofString(
                         "grant_type=" + GRANT_TYPE
                                 + "&code=" + authorizationCode
                                 + "&client_id=" + CLIENT_ID
                                 + "&client_secret=" + CLIENT_SECRET
-                                + "&redirect_uri=" + REDIRECT_URI)) // i did not get what to put there (i need to get acqunted with such methods)
+                                + "&redirect_uri=" + REDIRECT_URI))
                 .build();
 
         try {
             HttpClient client = HttpClient.newBuilder().build();
-            response = client.send(request, HttpResponse.BodyHandlers.ofString()); // the same as in example
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
             System.out.println( "Success!");
             setToken(response.body());
 
